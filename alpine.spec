@@ -3,7 +3,7 @@ Name: alpine
 Version: 1.00
 Release: %mkrel 1
 License: Apache License
-Group: Applications/Mail
+Group: Networking/Mail
 Source: ftp://ftp.cac.washington.edu/alpine/%{name}-%{version}.tar.gz
 URL: http://www.washington.edu/alpine
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
