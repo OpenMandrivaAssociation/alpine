@@ -12,6 +12,7 @@ BuildRequires: pam-devel
 BuildRequires: libopenssl-devel
 BuildRequires: libldap-devel
 BuildRequires: libtcl-devel
+Conflicts: pine
 
 %description
 Alpine -- an Alternatively Licensed Program for Internet
