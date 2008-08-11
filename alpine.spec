@@ -1,10 +1,13 @@
+# Need to link over pam
+%define _disable_ld_as_needed 1
+
 Summary: University of Washington Pine mail user agent
 Name: alpine
-Version: 1.00
+Version: 1.10
 Release: %mkrel 3
 License: Apache License
 Group: Networking/Mail
-Source: ftp://ftp.cac.washington.edu/alpine/%{name}-%{version}.tar.gz
+Source: ftp://ftp.cac.washington.edu/alpine/%{name}-%{version}.tar.bz2
 URL: http://www.washington.edu/alpine
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: ncurses-devel
