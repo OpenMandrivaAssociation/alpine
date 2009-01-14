@@ -1,21 +1,24 @@
 # Need to link over pam
-%define _disable_ld_as_needed 1
+%define _disable_ld_as_needed 0
 
 Summary: University of Washington Pine mail user agent
 Name: alpine
 Version: 2.00
-Release: %mkrel 1
+Release: %mkrel 2
 License: Apache License
 Group: Networking/Mail
 Source: ftp://ftp.cac.washington.edu/alpine/%{name}-%{version}.tar.bz2
+Patch0: alpine-2.00-string-format.patch
 URL: http://www.washington.edu/alpine
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildRequires: aspell
 BuildRequires: ncurses-devel
 BuildRequires: pam-devel
 BuildRequires: libopenssl-devel
 BuildRequires: libldap-devel
-BuildRequires: libtcl-devel
 Conflicts: pine
+Requires: aspell
+Requires: mailcap
 
 %description
 Alpine -- an Alternatively Licensed Program for Internet
@@ -29,19 +32,25 @@ configuration and personal-preference options.
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch0 -p1 -b .stft
 
 %build
 touch imap/ip6
-%configure --without-krb5 --with-spellcheck-prog=aspell
+%configure --without-krb5 \
+           --without-tcl \
+           --with-c-client-target=lfd \
+           --with-spellcheck-prog=aspell \
+           --with-passfile=.alpine.passfile \
+           --with-system-pinerc=%{_sysconfdir}/pine.conf \
+           --with-system-fixed-pinerc=%{_sysconfdir}/pine.conf.fixed
+
+
 %make
 
 %install
-[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
-install -D -m755 alpine/alpine $RPM_BUILD_ROOT%{_bindir}/alpine
-install -D -m755 pico/pico $RPM_BUILD_ROOT%{_bindir}/pico
-install -D -m755 pico/pilot $RPM_BUILD_ROOT%{_bindir}/pilot
-install -D -m755 alpine/rpload $RPM_BUILD_ROOT%{_bindir}/rpload
-install -D -m755 alpine/rpdump $RPM_BUILD_ROOT%{_bindir}/rpdump
+rm -rf %{buildroot}
+%makeinstall_std
+
 install -D -m755 imap/mailutil/mailutil $RPM_BUILD_ROOT%{_bindir}/mailutil
 if ! install -D -m2755 -gmail imap/mlock/mlock $RPM_BUILD_ROOT%{_sbindir}/mlock; then
 install -D -m755 imap/mlock/mlock $RPM_BUILD_ROOT%{_sbindir}/mlock
@@ -49,15 +58,15 @@ echo "*** DO NOT FORGET TO DO THE FOLLOWING BY HAND while root:
 ***  chgrp mail $RPM_BUILD_ROOT%{_sysconfdir}/mlock
 ***  echo chmod 2755 $RPM_BUILD_ROOT%{_sysconfdir}/mlock"
 fi
-install -D -m644 doc/alpine.1 $RPM_BUILD_ROOT%{_mandir}/man1/alpine.1
-install -D -m644 doc/pico.1 $RPM_BUILD_ROOT%{_mandir}/man1/pico.1
-install -D -m644 doc/pilot.1 $RPM_BUILD_ROOT%{_mandir}/man1/pilot.1
-install -D -m644 doc/rpload.1 $RPM_BUILD_ROOT%{_mandir}/man1/rpload.1
-install -D -m644 doc/rpdump.1 $RPM_BUILD_ROOT%{_mandir}/man1/rpdump.1
 install -D -m644 imap/src/mailutil/mailutil.1 $RPM_BUILD_ROOT%{_mandir}/man1/mailutil.1
 
+# create/touch %ghost'd files
+mkdir -p %{buildroot}%{_sysconfdir}
+touch %{buildroot}%{_sysconfdir}/pine.conf
+touch %{buildroot}%{_sysconfdir}/pine.conf.fixed
+
 %clean
-[ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
@@ -75,3 +84,6 @@ install -D -m644 imap/src/mailutil/mailutil.1 $RPM_BUILD_ROOT%{_mandir}/man1/mai
 %{_mandir}/man1/rpload.1*
 %{_mandir}/man1/rpdump.1*
 %{_mandir}/man1/mailutil.1*
+%ghost %config(noreplace) %{_sysconfdir}/pine.conf
+%ghost %config(noreplace) %{_sysconfdir}/pine.conf.fixed
+
