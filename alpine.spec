@@ -4,7 +4,7 @@
 Summary: University of Washington Pine mail user agent
 Name: alpine
 Version: 2.00
-Release: %mkrel 5
+Release: %mkrel 6
 License: Apache License
 Group: Networking/Mail
 Source: ftp://ftp.cac.washington.edu/alpine/%{name}-%{version}.tar.bz2
