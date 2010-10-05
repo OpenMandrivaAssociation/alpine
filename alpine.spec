@@ -6,6 +6,7 @@ License: Apache License
 Group: Networking/Mail
 Source: ftp://ftp.cac.washington.edu/alpine/%{name}-%{version}.tar.bz2
 Patch0: alpine-2.00-string-format.patch
+Patch1: alpine-2.00-link.patch
 URL: http://www.washington.edu/alpine
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: aspell
@@ -31,6 +32,7 @@ configuration and personal-preference options.
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1 -b .stft
+%patch1 -p0 -b .link
 
 %build
 autoreconf -fi
