@@ -1,6 +1,3 @@
-# Need to link over pam
-%define _disable_ld_as_needed 0
-
 Summary: University of Washington Pine mail user agent
 Name: alpine
 Version: 2.00
@@ -38,7 +35,7 @@ configuration and personal-preference options.
 %build
 autoreconf -fi
 touch imap/ip6
-%configure --without-krb5 \
+%configure2_5x --without-krb5 \
            --without-tcl \
            --with-c-client-target=lfd \
            --with-spellcheck-prog=aspell \
