@@ -1,12 +1,13 @@
-Summary: University of Washington Pine mail user agent
+Summary: Mail user agent
 Name: alpine
-Version: 2.00
-Release: %mkrel 7
+Version: 2.02
+Release: %mkrel 1
 License: Apache License
 Group: Networking/Mail
-Source: ftp://ftp.cac.washington.edu/alpine/%{name}-%{version}.tar.bz2
+Source: http://sourceforge.net/projects/re-alpine/files/%{name}-%{version}.tar.bz2
 Patch0: alpine-2.00-string-format.patch
 Patch1: alpine-2.00-link.patch
+Patch2: alpine-2.00-maildir.patch
 URL: http://www.washington.edu/alpine
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: aspell
@@ -20,19 +21,23 @@ Requires: aspell
 Requires: mailcap
 
 %description
-Alpine -- an Alternatively Licensed Program for Internet
-News & Email -- is a tool for reading, sending, and managing
-electronic messages.  Alpine is the successor to Pine and was
-developed by Computing & Communications at the University of
-Washington.  
+Alpine is a tool for reading, sending, and managing e-mail and 
+internet news (usenet) messages. It is the successor to Pine and 
+was developed by Computing & Communications at the University of
+Washington.
+
 Though originally designed for inexperienced email users,
-Alpine supports many advanced features, and an ever-growing number of
+Alpine supports many advanced features and a large number of
 configuration and personal-preference options.
+
+This package contains re-alpine, a continuation of alpine. It is
+patched to add support for maildir style mailboxes.
 
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1 -b .stft
 %patch1 -p0 -b .link
+%patch2 -p1 -b .maildir
 
 %build
 autoreconf -fi
@@ -45,21 +50,14 @@ touch imap/ip6
            --with-system-pinerc=%{_sysconfdir}/pine.conf \
            --with-system-fixed-pinerc=%{_sysconfdir}/pine.conf.fixed
 
-
 %make
 
 %install
 rm -rf %{buildroot}
 %makeinstall_std
 
-install -D -m755 imap/mailutil/mailutil $RPM_BUILD_ROOT%{_bindir}/mailutil
-if ! install -D -m2755 -gmail imap/mlock/mlock $RPM_BUILD_ROOT%{_sbindir}/mlock; then
-install -D -m755 imap/mlock/mlock $RPM_BUILD_ROOT%{_sbindir}/mlock
-echo "*** DO NOT FORGET TO DO THE FOLLOWING BY HAND while root:
-***  chgrp mail $RPM_BUILD_ROOT%{_sysconfdir}/mlock
-***  echo chmod 2755 $RPM_BUILD_ROOT%{_sysconfdir}/mlock"
-fi
-install -D -m644 imap/src/mailutil/mailutil.1 $RPM_BUILD_ROOT%{_mandir}/man1/mailutil.1
+install -D -m755 imap/mailutil/mailutil %{buildroot}%{_bindir}/mailutil
+install -D -m644 imap/src/mailutil/mailutil.1 %{buildroot}%{_mandir}/man1/mailutil.1
 
 # create/touch %ghost'd files
 mkdir -p %{buildroot}%{_sysconfdir}
