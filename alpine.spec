@@ -57,6 +57,7 @@ rm -rf %{buildroot}
 %makeinstall_std
 
 install -D -m755 imap/mailutil/mailutil %{buildroot}%{_bindir}/mailutil
+install -D -m755 imap/mlock/mlock %{buildroot}%{_sbindir}/mlock
 install -D -m644 imap/src/mailutil/mailutil.1 %{buildroot}%{_mandir}/man1/mailutil.1
 
 # create/touch %ghost'd files
