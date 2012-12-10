@@ -1,7 +1,7 @@
 Summary: Mail user agent
 Name: alpine
 Version: 2.02
-Release: %mkrel 1
+Release: 1
 License: Apache License
 Group: Networking/Mail
 Source: http://sourceforge.net/projects/re-alpine/files/%{name}-%{version}.tar.bz2
@@ -9,11 +9,10 @@ Patch0: alpine-2.00-string-format.patch
 Patch1: alpine-2.00-link.patch
 Patch2: alpine-2.00-maildir.patch
 URL: http://www.washington.edu/alpine
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: aspell
-BuildRequires: ncurses-devel
+BuildRequires: pkgconfig(ncurses)
 BuildRequires: pam-devel
-BuildRequires: libopenssl-devel
+BuildRequires: pkgconfig(openssl)
 BuildRequires: libldap-devel
 BuildRequires: gettext-devel
 Conflicts: pine
@@ -53,7 +52,6 @@ touch imap/ip6
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 
 install -D -m755 imap/mailutil/mailutil %{buildroot}%{_bindir}/mailutil
@@ -65,11 +63,8 @@ mkdir -p %{buildroot}%{_sysconfdir}
 touch %{buildroot}%{_sysconfdir}/pine.conf
 touch %{buildroot}%{_sysconfdir}/pine.conf.fixed
 
-%clean
-rm -rf %{buildroot}
 
 %files
-%defattr(-,root,root)
 %doc README LICENSE doc/tech-notes.txt
 %{_bindir}/alpine
 %{_bindir}/pico

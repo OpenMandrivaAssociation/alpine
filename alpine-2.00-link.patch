@@ -5,7 +5,7 @@
  	../pith/libpith.a ../pith/osdep/libpithosd.a  \
  	../pith/charconv/libpithcc.a \
 -	osdep/libpineosd.a ../c-client/c-client.a
-+	osdep/libpineosd.a ../c-client/c-client.a -lpam
++	osdep/libpineosd.a ../c-client/c-client.a -lpam -lcrypto
  
  AM_CPPFLAGS = -I@top_builddir@/include -I@top_srcdir@/include -DLOCALEDIR=\"$(localedir)\"
  
