@@ -1,10 +1,10 @@
 Summary: Mail user agent
 Name: alpine
-Version: 2.02
+Version: 2.03
 Release: 1
 License: Apache License
 Group: Networking/Mail
-Source: http://sourceforge.net/projects/re-alpine/files/%{name}-%{version}.tar.bz2
+Source: http://garr.dl.sourceforge.net/project/re-%{name}/re-%{name}-%{version}.tar.bz2
 Patch0: alpine-2.00-string-format.patch
 Patch1: alpine-2.00-link.patch
 Patch2: alpine-2.00-maildir.patch
@@ -13,7 +13,7 @@ BuildRequires: aspell
 BuildRequires: pkgconfig(ncurses)
 BuildRequires: pam-devel
 BuildRequires: pkgconfig(openssl)
-BuildRequires: libldap-devel
+BuildRequires: openldap-devel
 BuildRequires: gettext-devel
 Conflicts: pine
 Requires: aspell
@@ -33,7 +33,7 @@ This package contains re-alpine, a continuation of alpine. It is
 patched to add support for maildir style mailboxes.
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -q -n re-%{name}-%{version}
 %patch0 -p1 -b .stft
 %patch1 -p0 -b .link
 %patch2 -p1 -b .maildir
@@ -81,4 +81,5 @@ touch %{buildroot}%{_sysconfdir}/pine.conf.fixed
 %{_mandir}/man1/mailutil.1*
 %ghost %config(noreplace) %{_sysconfdir}/pine.conf
 %ghost %config(noreplace) %{_sysconfdir}/pine.conf.fixed
+
 
