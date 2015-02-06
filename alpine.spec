@@ -1,7 +1,7 @@
 Summary: Mail user agent
 Name: alpine
 Version: 2.03
-Release: 1
+Release: 2
 License: Apache License
 Group: Networking/Mail
 Source: http://garr.dl.sourceforge.net/project/re-%{name}/re-%{name}-%{version}.tar.bz2
