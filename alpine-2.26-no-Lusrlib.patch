@@ -1,0 +1,68 @@
+diff -up alpine-2.26/configure.ac.omv~ alpine-2.26/configure.ac
+--- alpine-2.26/configure.ac.omv~	2022-07-16 04:26:56.177965433 +0200
++++ alpine-2.26/configure.ac	2022-07-16 04:27:48.265262092 +0200
+@@ -878,11 +878,6 @@ if test "x$alpine_SSLTYPE" != "xnone" ;
+   elif test -n "$alpine_SSLDIR" ; then
+     CPPFLAGS="-I${alpine_SSLDIR}/include $CPPFLAGS"
+   fi
+-  if test -n "$alpine_SSLLIB" ; then
+-    LDFLAGS="-L$alpine_SSLLIB $LDFLAGS"
+-  elif test -n "$alpine_SSLDIR" ; then
+-    LDFLAGS="-L${alpine_SSLDIR}/lib $LDFLAGS"
+-  fi
+ fi
+ 
+ if test "x$alpine_SSLTYPE" != "xnone" ; then
+@@ -964,10 +959,6 @@ else
+   AC_ARG_WITH(krb5-dir,
+     AS_HELP_STRING([--with-krb5-dir=DIR],[Root of Kerberos lib/include path]),
+     [
+-      if test "x$withval" != "xno" ; then
+-	CPPFLAGS="$CPPFLAGS -I${withval}/include"
+-	LDFLAGS="$LDFLAGS -L${withval}/lib"
+-      fi
+     ])
+ 
+   AC_ARG_WITH(krb5-include-dir,
+@@ -981,9 +972,6 @@ else
+   AC_ARG_WITH(krb5-lib-dir,
+     AS_HELP_STRING([--with-krb5-lib-dir=DIR],[Kerberos library path]),
+     [
+-      if test "x$withval" != "xno" ; then
+-	LDFLAGS="$LDFLAGS -L$withval"
+-      fi
+     ])
+ fi
+ 
+@@ -1037,9 +1025,6 @@ else
+    if test -n "$alpine_LDAPINCLUDE" ; then
+ 	CPPFLAGS="$CPPFLAGS -I${alpine_LDAPINCLUDE}/include"
+    fi
+-   if test -n "$alpine_LDAPLIB" ; then
+-	LDFLAGS="$LDFLAGS -L${alpine_LDAPLIB}/lib"
+-   fi
+ fi
+ 
+ dnl Include SMIME?
+@@ -1061,9 +1046,6 @@ else
+     [
+       if test "x$withval" != "xno" ; then 
+ 	alpine_TCLLIBDIR=$withval
+-	if test -n "$alpine_TCLLIBDIR" ; then
+-           LDFLAGS="-L$alpine_TCLLIBDIR $LDFLAGS"
+-	fi
+       fi
+     ])
+   AC_ARG_WITH(tcl-lib,
+diff -up alpine-2.26/imap/src/osdep/unix/Makefile.omv~ alpine-2.26/imap/src/osdep/unix/Makefile
+--- alpine-2.26/imap/src/osdep/unix/Makefile.omv~	2022-07-16 04:35:28.002550790 +0200
++++ alpine-2.26/imap/src/osdep/unix/Makefile	2022-07-16 04:35:51.539656716 +0200
+@@ -75,7 +75,7 @@ SSLRSA= # -lRSAglue -lrsaref
+ 
+ SSLCFLAGS= -I$(SSLINCLUDE) -I$(SSLINCLUDE)/openssl\
+  -DSSL_CERT_DIRECTORY=\"$(SSLCERTS)\" -DSSL_KEY_DIRECTORY=\"$(SSLKEYS)\"
+-SSLLDFLAGS= -L$(SSLLIB) -lssl $(SSLCRYPTO) $(SSLRSA)
++SSLLDFLAGS= -lssl $(SSLCRYPTO) $(SSLRSA)
+ 
+ 
+ # Extended flags needed for non-standard passwd types.  You may need to modify.
