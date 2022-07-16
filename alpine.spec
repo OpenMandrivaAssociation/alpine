@@ -1,14 +1,14 @@
-Summary: Mail user agent
+Summary: Command line email client
 Name: alpine
-Version: 2.03
-Release: 2
+Version: 2.26
+Release: 1
 License: Apache License
 Group: Networking/Mail
-Source: http://garr.dl.sourceforge.net/project/re-%{name}/re-%{name}-%{version}.tar.bz2
-Patch0: alpine-2.00-string-format.patch
+Source: https://alpineapp.email/alpine/release/src/alpine-%{version}.tar.xz
+Patch0: https://alpineapp.email/alpine/patches/alpine-%{version}/all.patch.gz
 Patch1: alpine-2.00-link.patch
-Patch2: alpine-2.00-maildir.patch
-URL: http://www.washington.edu/alpine
+Patch2: alpine-2.26-no-Lusrlib.patch
+URL: http://alpineapp.email/
 BuildRequires: aspell
 BuildRequires: pkgconfig(ncurses)
 BuildRequires: pam-devel
@@ -33,53 +33,37 @@ This package contains re-alpine, a continuation of alpine. It is
 patched to add support for maildir style mailboxes.
 
 %prep
-%setup -q -n re-%{name}-%{version}
-%patch0 -p1 -b .stft
-%patch1 -p0 -b .link
-%patch2 -p1 -b .maildir
-
-%build
-autoreconf -fi
+%autosetup -p1 -n %{name}-%{version}
 touch imap/ip6
-%configure2_5x --without-krb5 \
+%configure --without-krb5 \
            --without-tcl \
            --with-c-client-target=lfd \
-           --with-spellcheck-prog=aspell \
            --with-passfile=.alpine.passfile \
            --with-system-pinerc=%{_sysconfdir}/pine.conf \
            --with-system-fixed-pinerc=%{_sysconfdir}/pine.conf.fixed
 
-%make
+%build
+%make_build
 
 %install
-%makeinstall_std
-
-install -D -m755 imap/mailutil/mailutil %{buildroot}%{_bindir}/mailutil
-install -D -m755 imap/mlock/mlock %{buildroot}%{_sbindir}/mlock
-install -D -m644 imap/src/mailutil/mailutil.1 %{buildroot}%{_mandir}/man1/mailutil.1
+%make_install
 
 # create/touch %ghost'd files
 mkdir -p %{buildroot}%{_sysconfdir}
 touch %{buildroot}%{_sysconfdir}/pine.conf
 touch %{buildroot}%{_sysconfdir}/pine.conf.fixed
 
-
 %files
-%doc README LICENSE doc/tech-notes.txt
+%doc README LICENSE
 %{_bindir}/alpine
 %{_bindir}/pico
 %{_bindir}/pilot
 %{_bindir}/rpload
 %{_bindir}/rpdump
-%{_bindir}/mailutil
-%attr(2755, root, mail) %{_sbindir}/mlock
 %{_mandir}/man1/alpine.1*
 %{_mandir}/man1/pico.1*
 %{_mandir}/man1/pilot.1*
 %{_mandir}/man1/rpload.1*
 %{_mandir}/man1/rpdump.1*
-%{_mandir}/man1/mailutil.1*
 %ghost %config(noreplace) %{_sysconfdir}/pine.conf
 %ghost %config(noreplace) %{_sysconfdir}/pine.conf.fixed
-
-

@@ -1,5 +1,5 @@
---- alpine/Makefile.am.bak	2010-10-02 10:37:57.000000000 +0200
-+++ alpine/Makefile.am	2010-10-20 02:12:10.463180499 +0200
+--- a/alpine/Makefile.am.bak	2010-10-02 10:37:57.000000000 +0200
++++ b/alpine/Makefile.am	2010-10-20 02:12:10.463180499 +0200
 @@ -35,7 +35,7 @@
  LDADD = ../pico/libpico.a ../pico/osdep/libpicoosd.a \
  	../pith/libpith.a ../pith/osdep/libpithosd.a  \

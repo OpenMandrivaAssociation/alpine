@@ -1,3 +1,3 @@
 sources:
-  alpine-2.02.tar.bz2: 222e2a0143da728c07dd548285522ce68609575e
-  re-alpine-2.03.tar.bz2: 8e1c4f4a4d38814478e8bd3bbeed1c0f8ee9491b
+  alpine-2.26.tar.xz: 0b7380e9a8f37616750489869879d1b2d575deb4
+  all.patch.gz: d2cb2fea6c29e4b5778e1f3e0a0947e81e24a9a3
