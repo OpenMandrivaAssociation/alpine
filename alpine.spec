@@ -1,7 +1,7 @@
 Summary: Command line email client
 Name: alpine
 Version: 2.26
-Release: 1
+Release: 2
 License: Apache License
 Group: Networking/Mail
 Source: https://alpineapp.email/alpine/release/src/alpine-%{version}.tar.xz
