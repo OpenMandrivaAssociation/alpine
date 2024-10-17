@@ -8,7 +8,7 @@ Source: https://alpineapp.email/alpine/release/src/alpine-%{version}.tar.xz
 Patch0: https://alpineapp.email/alpine/patches/alpine-%{version}/all.patch.gz
 Patch1: alpine-2.00-link.patch
 Patch2: alpine-2.26-no-Lusrlib.patch
-URL: http://alpineapp.email/
+URL: https://alpineapp.email/
 BuildRequires: aspell
 BuildRequires: pkgconfig(ncurses)
 BuildRequires: pam-devel
