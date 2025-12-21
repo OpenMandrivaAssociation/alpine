@@ -9,6 +9,11 @@ Patch0: https://alpineapp.email/alpine/patches/alpine-%{version}/all.patch.gz
 Patch1: alpine-2.00-link.patch
 Patch2: alpine-2.26-no-Lusrlib.patch
 URL: https://alpineapp.email/
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires: aspell
 BuildRequires: pkgconfig(ncurses)
 BuildRequires: pam-devel
